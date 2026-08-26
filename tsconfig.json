@@ -1,0 +1,17 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [
+    ".astro/types.d.ts",
+    "**/*",
+    "./worker-configuration.d.ts"
+  ],
+  "exclude": [
+    "dist"
+],
+"compilerOptions": {
+    "types": [
+        "./worker-configuration.d.ts",
+        "node"
+    ]
+}
+}
