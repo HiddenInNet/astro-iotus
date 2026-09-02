@@ -1,5 +1,1 @@
 @import "tailwindcss";
-
-body, a, button {
-    cursor: url("cursor.svg"), auto !important;
-}
