@@ -1,12 +1,11 @@
 ---
 import IotusSVG from '@/assets/svg/iotus.svg'
-import StatusIndicator from './StatusIndicator.astro';
+import StatusIndicator from './StatusIndicator.astro'
 
 const navItems = [
   { name: 'Inicio', href: '/' },
   { name: 'Noticias', href: '#noticias' },
   { name: 'Análisis', href: '#analisis' },
-  { name: 'Gadgets', href: '#gadgets' },
 ]
 ---
 
@@ -150,14 +149,14 @@ const navItems = [
     .channel('settings-changes')
     .on(
       'postgres_changes',
-      { 
+      {
         event: 'UPDATE', // Normalmente solo te interesan las actualizaciones
-        schema: 'public', 
-        table: 'settings' 
+        schema: 'public',
+        table: 'settings',
       },
       (payload) => {
         console.log('¡Cambio recibido!', payload)
-        
+
         // Aquí manejas la lógica para abrir o cerrar el PopUp dinámicamente
         const newIsOpen = payload.new.isOpen
         const container = document.getElementById('popup-container')
