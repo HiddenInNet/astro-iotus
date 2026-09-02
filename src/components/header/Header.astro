@@ -1,0 +1,171 @@
+---
+import IotusSVG from '@/assets/svg/iotus.svg'
+import StatusIndicator from './StatusIndicator.astro';
+
+const navItems = [
+  { name: 'Inicio', href: '/' },
+  { name: 'Noticias', href: '#noticias' },
+  { name: 'Análisis', href: '#analisis' },
+  { name: 'Gadgets', href: '#gadgets' },
+]
+---
+
+<header
+  class="sticky top-0 z-50 w-full border-b-4 border-black bg-cyan-400 font-mono"
+>
+  <div
+    class="mx-auto flex h-16.25 max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8"
+  >
+    <div class="flex items-center gap-4">
+      <a href="/" class="group flex min-h-10 min-w-20 items-center gap-2">
+        <div
+          class="flex min-h-10 min-w-20 items-center justify-center border-2 border-black bg-yellow-300 p-2 text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all group-hover:translate-x-0.5 group-hover:translate-y-0.5 group-hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+        >
+          <IotusSVG />
+        </div>
+      </a>
+
+      <!-- Indicador de Abierto / Cerrado -->
+      <StatusIndicator />
+    </div>
+
+    <!-- Navegación Desktop -->
+    <nav class="hidden items-center gap-6 md:flex">
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            class="border-2 border-transparent px-3 py-1 text-base font-bold text-black shadow-none transition-all hover:border-black hover:bg-white hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
+          >
+            {item.name}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="hidden items-center gap-4 md:flex">
+      <a
+        href="#suscribirse"
+        class="border-2 border-black bg-yellow-300 px-4 py-2 text-sm font-black text-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none"
+      >
+        Únete
+      </a>
+    </div>
+
+    <!-- boton del menu de movil -->
+    <button
+      id="menu-btn"
+      type="button"
+      aria-label="Abrir menú de navegación"
+      class="relative z-50 flex h-10 w-10 items-center justify-center border-2 border-black bg-white text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] md:hidden"
+    >
+      <svg
+        id="menu-icon-open"
+        class="h-6 w-6 stroke-[2.5]"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+      <svg
+        id="menu-icon-close"
+        class="hidden h-6 w-6 stroke-[2.5]"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+  </div>
+
+  <div
+    id="mobile-backdrop"
+    class="pointer-events-none fixed inset-0 top-16.25 z-40 bg-black/50 opacity-0 transition-opacity duration-200 md:hidden"
+  >
+  </div>
+
+  <aside
+    id="mobile-menu"
+    class="fixed top-16.25 left-0 z-40 h-[calc(100vh-65px)] w-72 -translate-x-full border-r-4 border-b-4 border-black bg-yellow-300 p-6 transition-transform duration-300 ease-in-out md:hidden"
+  >
+    <nav class="flex flex-col gap-4">
+      {
+        navItems.map((item) => (
+          <a
+            href={item.href}
+            class="border-2 border-black bg-white p-3 text-base font-black text-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-x-0.5 active:translate-y-0.5 active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          >
+            {item.name}
+          </a>
+        ))
+      }
+      <a
+        href="#suscribirse"
+        class="mt-6 w-full border-2 border-black bg-cyan-400 py-3 text-center text-base font-black text-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-x-0.5 active:translate-y-0.5 active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+      >
+        Suscribirse
+      </a>
+    </nav>
+  </aside>
+</header>
+
+<script>
+  const menuBtn = document.getElementById('menu-btn')
+  const mobileMenu = document.getElementById('mobile-menu')
+  const backdrop = document.getElementById('mobile-backdrop')
+  const openIcon = document.getElementById('menu-icon-open')
+  const closeIcon = document.getElementById('menu-icon-close')
+
+  function toggleMenu() {
+    const isOpen = mobileMenu?.classList.contains('translate-x-0')
+
+    mobileMenu?.classList.toggle('-translate-x-full', isOpen)
+    mobileMenu?.classList.toggle('translate-x-0', !isOpen)
+
+    backdrop?.classList.toggle('opacity-0', isOpen)
+    backdrop?.classList.toggle('pointer-events-none', isOpen)
+    backdrop?.classList.toggle('opacity-100', !isOpen)
+
+    openIcon?.classList.toggle('hidden', !isOpen)
+    closeIcon?.classList.toggle('hidden', isOpen)
+  }
+
+  menuBtn?.addEventListener('click', toggleMenu)
+  backdrop?.addEventListener('click', toggleMenu)
+</script>
+
+<script>
+  import { supabase } from '@/lib/supabase'
+
+  // Escucha los cambios en tiempo real desde el cliente (navegador)
+  supabase
+    .channel('settings-changes')
+    .on(
+      'postgres_changes',
+      { 
+        event: 'UPDATE', // Normalmente solo te interesan las actualizaciones
+        schema: 'public', 
+        table: 'settings' 
+      },
+      (payload) => {
+        console.log('¡Cambio recibido!', payload)
+        
+        // Aquí manejas la lógica para abrir o cerrar el PopUp dinámicamente
+        const newIsOpen = payload.new.isOpen
+        const container = document.getElementById('popup-container')
+        if (container) {
+          container.setAttribute('data-open', newIsOpen.toString())
+          // O puedes disparar un evento personalizado, clases de CSS, etc.
+        }
+      }
+    )
+    .subscribe()
+</script>

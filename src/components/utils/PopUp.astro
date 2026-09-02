@@ -1,0 +1,100 @@
+---
+interface Props {
+  id?: string;
+  title?: string;
+  message?: string;
+}
+
+const { 
+  id = "neobrutal-popup", 
+  title = "INFORMACIÓN", 
+  message = "Este es un mensaje rápido de notificación." 
+} = Astro.props;
+---
+
+<!-- Pop-Up Container -->
+<div
+  id={id}
+  class="fixed z-50 hidden w-64 border-4 border-black bg-white p-4 font-mono shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all duration-150"
+  style="top: 0px; left: 0px;"
+  role="dialog"
+  aria-hidden="true"
+>
+  <!-- Triángulo del bocadillo (Puntero apuntando hacia arriba) -->
+  <div class="absolute -top-3 left-6 h-0 w-0 border-x-8 border-b-12 border-x-transparent border-b-black"></div>
+  <div class="absolute -top-2 left-6 h-0 w-0 border-x-8 border-b-12 border-x-transparent border-b-yellow-300"></div>
+
+  <!-- Header del Pop-Up -->
+  <div class="mb-2 flex items-center justify-between border-b-2 border-black pb-2">
+    <div class="flex items-center gap-1.5">
+      <span class="h-3 w-3 border border-black bg-yellow-300 inline-block"></span>
+      <h4 class="text-sm font-black text-black uppercase tracking-tight">{title}</h4>
+    </div>
+    <button
+      data-close-popup
+      type="button"
+      class="flex h-6 w-6 items-center justify-center border-2 border-black bg-red-400 font-black text-xs text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:bg-red-500 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+      aria-label="Cerrar"
+    >
+      ✕
+    </button>
+  </div>
+
+  <!-- Contenido -->
+  <div class="text-xs font-bold text-black leading-relaxed">
+    <slot>
+      <p>{message}</p>
+    </slot>
+  </div>
+</div>
+
+<script>
+  // Helper global para mostrar el Pop-Up en cualquier posición de la pantalla
+  window.showNeobrutalPopUp = (event: MouseEvent, targetId = "neobrutal-popup") => {
+    const popup = document.getElementById(targetId);
+    if (!popup) return;
+
+    // Obtener la posición del clic
+    const x = event.clientX;
+    const y = event.clientY;
+
+    // Dimensiones de la ventana y del popup para no salirse de la pantalla
+    const popupWidth = 256; // 64 * 4px (w-64)
+    const padding = 16;
+    
+    let leftPos = x - 28; // Alinea la flecha con el clic
+    if (leftPos + popupWidth > window.innerWidth - padding) {
+      leftPos = window.innerWidth - popupWidth - padding;
+    }
+    if (leftPos < padding) leftPos = padding;
+
+    // Posicionar debajo del punto de clic (offset de 12px para el triángulo)
+    popup.style.top = `${y + 12}px`;
+    popup.style.left = `${leftPos}px`;
+
+    popup.classList.remove('hidden');
+    popup.setAttribute('aria-hidden', 'false');
+  };
+
+  // Lógica para cerrar el Pop-Up
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    
+    // Si se hace clic en el botón de cerrar
+    if (target.closest('[data-close-popup]')) {
+      const popup = target.closest('[role="dialog"]');
+      popup?.classList.add('hidden');
+      popup?.setAttribute('aria-hidden', 'true');
+      return;
+    }
+
+    // Cerrar si se hace clic fuera de cualquier pop-up o disparador
+    const activePopups = document.querySelectorAll('[role="dialog"]:not(.hidden)');
+    activePopups.forEach((popup) => {
+      if (!popup.contains(target) && !target.closest('[data-popup-trigger]')) {
+        popup.classList.add('hidden');
+        popup.setAttribute('aria-hidden', 'true');
+      }
+    });
+  });
+</script>
