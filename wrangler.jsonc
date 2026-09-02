@@ -1,8 +1,8 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "compatibility_date": "2026-08-25",
+  "compatibility_date": "2026-09-02",
   "compatibility_flags": ["global_fetch_strictly_public"],
-  "name": "astro-iotus",
+  "name": "iotus",
   "main": "@astrojs/cloudflare/entrypoints/server",
   "assets": {
     "directory": "./dist",
