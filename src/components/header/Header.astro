@@ -140,31 +140,3 @@ const navItems = [
   menuBtn?.addEventListener('click', toggleMenu)
   backdrop?.addEventListener('click', toggleMenu)
 </script>
-
-<script>
-  import { supabase } from '@/lib/supabase'
-
-  // Escucha los cambios en tiempo real desde el cliente (navegador)
-  supabase
-    .channel('settings-changes')
-    .on(
-      'postgres_changes',
-      {
-        event: 'UPDATE', // Normalmente solo te interesan las actualizaciones
-        schema: 'public',
-        table: 'settings',
-      },
-      (payload) => {
-        console.log('¡Cambio recibido!', payload)
-
-        // Aquí manejas la lógica para abrir o cerrar el PopUp dinámicamente
-        const newIsOpen = payload.new.isOpen
-        const container = document.getElementById('popup-container')
-        if (container) {
-          container.setAttribute('data-open', newIsOpen.toString())
-          // O puedes disparar un evento personalizado, clases de CSS, etc.
-        }
-      }
-    )
-    .subscribe()
-</script>
