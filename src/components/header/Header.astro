@@ -1,6 +1,7 @@
 ---
 import IotusSVG from '@/assets/svg/iotus.svg'
-import StatusIndicator from './StatusIndicator.astro'
+import StatusIndicator from '@/components/header/StatusIndicator.astro'
+import StatusSkeleton from '@/components/header/StatusSkeleton.astro'
 
 const navItems = [
   { name: 'Inicio', href: '/' },
@@ -27,8 +28,9 @@ const navItems = [
         </div>
       </a>
 
-      <!-- Indicador de Abierto / Cerrado -->
-      <StatusIndicator />
+      <StatusIndicator server:defer>
+        <StatusSkeleton slot="fallback" />
+      </StatusIndicator>
     </div>
 
     <!-- Navegación Desktop -->
@@ -59,7 +61,7 @@ const navItems = [
       id="menu-btn"
       type="button"
       aria-label="Abrir menú de navegación"
-      class="relative z-50 flex h-10 w-10 items-center justify-center border-2 border-black bg-white text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] md:hidden"
+      class="relative z-40 flex h-10 w-10 items-center justify-center border-2 border-black bg-white text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] md:hidden"
     >
       <svg
         id="menu-icon-open"

@@ -1,9 +1,8 @@
 ---
 import { getIsOpen } from '@/lib/services/settings'
-import PopUp from "../utils/PopUp.astro";
+import PopUp from '../utils/PopUp.astro'
 
-const isOpen = await getIsOpen();
-
+const isOpen = await getIsOpen()
 ---
 
 <div
@@ -30,7 +29,6 @@ const isOpen = await getIsOpen();
   </span>
 </div>
 
-<!-- PopUps -->
 <PopUp id="department-state-popup" title="ESTADO IOTUS">
   <p>El departamento está {isOpen ? 'abierto' : 'cerrado'}</p>
 </PopUp>
