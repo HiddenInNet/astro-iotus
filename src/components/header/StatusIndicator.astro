@@ -9,7 +9,7 @@ const isOpen = await getIsOpen()
   id="status-indicator"
   data-popup-trigger
   onclick="window.showNeobrutalPopUp(event, 'department-state-popup')"
-  class={`flex items-center gap-2 border-2 border-black px-2.5 py-1 text-xs font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] ${
+  class={`flex items-center justify-center gap-2 border-2 border-black px-2.5 py-1 text-xs font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] md:min-w-30 ${
     isOpen ? 'bg-emerald-400 text-black' : 'bg-red-500 text-white'
   }`}
   title={isOpen ? 'Departamento Abierto' : 'Departamento Cerrado'}

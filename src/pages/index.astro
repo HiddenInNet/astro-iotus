@@ -3,6 +3,194 @@ import Layout from '@/layouts/Layout.astro'
 import { name } from '@/data/info.json'
 
 const title = `Home - ${name}`
+
+const features = [
+  {
+    tag: 'GRET-01',
+    title: 'GRET-Tech & Gadgets',
+    desc: 'Análisis sin filtro del hardware más brutal. Desarmamos y testeamos tecnología al límite.',
+    bg: 'bg-yellow-300',
+  },
+  {
+    tag: 'IOT-02',
+    title: 'Sistemas IOTUS',
+    desc: 'Automatización y sensores en tiempo real. Redes distribuidas con monitoreo de estado live.',
+    bg: 'bg-pink-400',
+  },
+  {
+    tag: 'DEV-03',
+    title: 'Open Source',
+    desc: 'Software libre, herramientas de terminal y experimentos sin código propietario ni sorpresas.',
+    bg: 'bg-lime-300',
+  },
+]
 ---
 
-<Layout title={title} />
+<Layout title={title}>
+  <div class="w-full bg-cyan-400 font-mono text-black">
+    <section
+      class="border-b-4 border-black bg-cyan-400 px-4 py-16 sm:px-6 lg:px-8"
+    >
+      <div class="mx-auto max-w-7xl">
+        <div class="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
+          <div class="flex flex-col items-start gap-6 lg:col-span-7">
+            <div
+              class="inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
+            >
+              🚀 Bienvenido a {name}
+            </div>
+
+            <h1
+              class="text-4xl font-black tracking-tight text-black uppercase sm:text-6xl lg:text-7xl"
+            >
+              TECNOLOGÍA <br />
+              <span class="border-b-4 border-black bg-yellow-300 px-2"
+                >SIN FILTROS</span
+              >
+            </h1>
+
+            <p
+              class="max-w-2xl border-l-4 border-black bg-white p-4 text-base font-bold text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:text-lg"
+            >
+              Exploramos el ecosistema IoT, hardware de vanguardia y análisis de
+              software con la estética pura del Neobrutalismo.
+            </p>
+
+            <div class="flex flex-wrap gap-4 pt-2">
+              <a
+                href="#explorar"
+                class="border-4 border-black bg-yellow-300 px-6 py-3 text-lg font-black text-black uppercase shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-1.5 active:translate-y-1.5 active:shadow-none"
+              >
+                Explorar Noticias
+              </a>
+              <a
+                href="#gadgets"
+                class="border-4 border-black bg-white px-6 py-3 text-lg font-black text-black uppercase shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-black hover:text-yellow-300 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none"
+              >
+                Ver Gadgets
+              </a>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5">
+            <div
+              class="relative border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+            >
+              <div
+                class="mb-4 flex items-center justify-between border-b-4 border-black pb-3"
+              >
+                <span
+                  class="border-2 border-black bg-red-400 px-2 py-0.5 text-xs font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                >
+                  LIVE STATUS
+                </span>
+                <span class="text-xs font-black">SYS.SYS_v2.6</span>
+              </div>
+
+              <div
+                class="mb-6 flex items-center justify-center border-4 border-black bg-yellow-300 py-12 text-center"
+              >
+                <div>
+                  <div class="text-6xl">⚡</div>
+                  <div
+                    class="mt-2 text-2xl font-black tracking-wider uppercase"
+                  >
+                    IOTUS CORE
+                  </div>
+                </div>
+              </div>
+
+              <div class="space-y-3 text-sm font-bold">
+                <div class="flex justify-between border-b-2 border-black pb-1">
+                  <span>ESTADO RED:</span>
+                  <span class="border border-black bg-emerald-400 px-1"
+                    >ONLINE</span
+                  >
+                </div>
+                <div class="flex justify-between border-b-2 border-black pb-1">
+                  <span>PROTOCOLO:</span>
+                  <span>MQTT / HTTP2</span>
+                </div>
+                <div class="flex justify-between">
+                  <span>LATENCIA:</span>
+                  <span>12ms</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="explorar"
+      class="border-b-4 border-black bg-white px-4 py-16 sm:px-6 lg:px-8"
+    >
+      <div class="mx-auto max-w-7xl">
+        <div
+          class="mb-12 inline-block border-4 border-black bg-pink-400 p-4 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+        >
+          <h2 class="text-3xl font-black uppercase sm:text-4xl">
+            CATEGORÍAS DESTACADAS
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+          {
+            features.map((item) => (
+              <article
+                class={`border-4 border-black ${item.bg} p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-1`}
+              >
+                <div class="mb-4 inline-block border-2 border-black bg-white px-2 py-1 text-xs font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  {item.tag}
+                </div>
+                <h3 class="mb-3 text-2xl font-black text-black uppercase">
+                  {item.title}
+                </h3>
+                <p class="border-t-2 border-black pt-3 text-sm leading-relaxed font-bold text-black">
+                  {item.desc}
+                </p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-yellow-300 px-4 py-16 sm:px-6 lg:px-8">
+      <div
+        class="mx-auto max-w-4xl border-4 border-black bg-white p-8 shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] md:p-12"
+      >
+        <div class="text-center">
+          <span
+            class="inline-block border-2 border-black bg-cyan-400 px-3 py-1 text-xs font-black uppercase shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
+          >
+            BOLETÍN SEMANAL
+          </span>
+          <h2 class="mt-4 text-3xl font-black uppercase sm:text-5xl">
+            NO TE PIERDAS NADA
+          </h2>
+          <p class="mt-2 text-sm font-bold sm:text-base">
+            Suscríbete para recibir los mejores análisis de gadgets y novedades
+            tech directamente en tu inbox.
+          </p>
+
+          <form class="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
+            <input
+              type="email"
+              placeholder="TU-EMAIL@DOMINIO.COM"
+              class="w-full border-4 border-black bg-slate-100 px-4 py-3 font-bold text-black placeholder-slate-500 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] focus:bg-white focus:outline-none sm:max-w-xs"
+              required
+            />
+            <button
+              type="submit"
+              class="border-4 border-black bg-cyan-400 px-6 py-3 text-base font-black text-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:bg-pink-400 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none"
+            >
+              UNIRME AHORA
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </div>
+</Layout>
