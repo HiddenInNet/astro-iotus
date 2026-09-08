@@ -2,20 +2,24 @@
 import { getEntry, render } from 'astro:content'
 import Layout from '@/layouts/Layout.astro'
 
-const { project } = Astro.props
+const { slug } = Astro.params
 
-const post = await getEntry('projects', project)
+if (!slug) {
+  throw new Error('No se ha proporcionado url valida')
+}
 
-if (!post) {
+const project = await getEntry('projects', `projects/${slug}`)
+
+if (!project) {
   throw new Error('Project not found')
 }
 
-const { Content } = await render(post)
+const { Content } = await render(project)
 ---
 
 <Layout title={`${project.data.title} - Proyectos`}>
-  <main
-    class="min-h-screen bg-cyan-400 px-4 py-12 font-mono text-black sm:px-6 lg:px-8"
+  <div
+    class="w-full bg-cyan-400 px-4 py-12 font-mono text-black sm:px-6 lg:px-8"
   >
     <article
       class="mx-auto max-w-4xl border-4 border-black bg-white p-6 shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] md:p-10"
@@ -84,5 +88,5 @@ const { Content } = await render(post)
         <Content />
       </div>
     </article>
-  </main>
+  </div>
 </Layout>
