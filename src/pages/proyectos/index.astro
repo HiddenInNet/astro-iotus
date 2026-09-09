@@ -7,7 +7,6 @@ const title = `Proyectos - ${name}`
 
 const projects = await getCollection('projects')
 
-// Ordenar por fecha de publicación (más recientes primero)
 projects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
 ---
 
@@ -22,7 +21,7 @@ projects.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
           </h1>
         </div>
         <p class="mt-4 max-w-2xl border-l-4 border-black bg-white p-3 font-bold text-sm shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
-          Listado de sistemas hardware, software libre y prototipos IOTUS documentados en Markdown/MDX.
+          Todos nuestros proyectos IoT dentro del departamento
         </p>
       </header>
 

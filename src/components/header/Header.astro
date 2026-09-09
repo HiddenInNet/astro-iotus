@@ -1,15 +1,41 @@
 ---
 import IotusSVG from '@/assets/svg/iotus.svg'
-import StatusIndicator from '@/components/header/StatusIndicator.astro'
-import StatusSkeleton from '@/components/header/StatusSkeleton.astro'
+import StatusIndicator from '@/components/header/status/StatusIndicator.astro'
+import StatusSkeleton from '@/components/header/status/StatusSkeleton.astro'
+import ProfileButton from '@/components/header/profile/ProfileButton.astro'
+import JoinButton from '@/components/header/profile/JoinButton.astro'
+import { createSupabaseServerClient } from '@/lib/supabase'
 
-const navItems = [
+const supabase = createSupabaseServerClient(Astro)
+const {
+  data: { user },
+} = await supabase.auth.getUser()
+
+let inventoryVisible = false
+
+if (user) {
+  const { data: userRoles } = await supabase
+    .from('user_roles')
+    .select('role_id')
+    .eq('user_id', user.id)
+
+  if (userRoles && userRoles.length > 0) {
+    const allowedRoles = ['ADMIN', 'MEMBER']
+    inventoryVisible = userRoles.some((r) => allowedRoles.includes(r.role_id))
+  }
+}
+
+const baseNavItems = [
   { name: 'Inicio', href: '/' },
   { name: 'Proyectos', href: '/proyectos' },
   { name: 'Noticias', href: '/noticias' },
-  { name: 'Blog', href: '/blog' },
   { name: 'Sobre Nosotros', href: '/sobre-nosotros' },
 ]
+
+const navItems =
+  user && inventoryVisible
+    ? [...baseNavItems, { name: 'Inventario', href: '/inventario' }]
+    : baseNavItems
 ---
 
 <header
@@ -49,16 +75,12 @@ const navItems = [
       }
     </nav>
 
+    <!-- Estado de Usuario Desktop -->
     <div class="hidden items-center gap-4 md:flex">
-      <a
-        href="#suscribirse"
-        class="border-2 border-black bg-yellow-300 px-4 py-2 text-sm font-black text-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none"
-      >
-        Únete a nosotros
-      </a>
+      {user ? <ProfileButton user={user} /> : <JoinButton />}
     </div>
 
-    <!-- boton del menu de movil -->
+    <!-- Botón del menú de móvil -->
     <button
       id="menu-btn"
       type="button"
@@ -113,12 +135,22 @@ const navItems = [
           </a>
         ))
       }
-      <a
-        href="#suscribirse"
-        class="mt-6 w-full border-2 border-black bg-cyan-400 py-3 text-center text-base font-black text-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-x-0.5 active:translate-y-0.5 active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-      >
-        Únete a nosotros
-      </a>
+
+      <!-- Estado de Usuario Móvil -->
+      {
+        user ? (
+          <div class="mt-4 border-t-2 border-black pt-4">
+            <ProfileButton user={user} />
+          </div>
+        ) : (
+          <a
+            href="/register"
+            class="mt-6 w-full border-2 border-black bg-cyan-400 py-3 text-center text-base font-black text-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-x-0.5 active:translate-y-0.5 active:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          >
+            Únete a nosotros
+          </a>
+        )
+      }
     </nav>
   </aside>
 </header>

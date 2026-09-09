@@ -1,0 +1,74 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import { createSupabaseServerClient } from '@/lib/supabase'
+import { name } from '@/data/info.json'
+
+const title = `Iniciar Sesión - ${name}`
+
+const supabase = createSupabaseServerClient(Astro)
+const {
+  data: { user },
+} = await supabase.auth.getUser()
+
+if (user) {
+  return Astro.redirect('/')
+}
+---
+
+<Layout title={title}>
+  <div
+    class="flex w-full items-center justify-center bg-cyan-400 px-4 font-mono text-black"
+  >
+    <div
+      class="w-full max-w-md border-4 border-black bg-white p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+    >
+      <!-- Banner -->
+      <div class="mb-6 border-b-4 border-black pb-4 text-center">
+        <span
+          class="inline-block border-2 border-black bg-yellow-300 px-3 py-1 text-xs font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+        >
+          ACCESO IOTUS
+        </span>
+        <h1 class="mt-2 text-3xl font-black uppercase">INICIAR SESIÓN</h1>
+      </div>
+
+      <!-- Formulario -->
+      <form action="/api/auth/signin" method="POST" class="space-y-4">
+        <div>
+          <label for="email" class="mb-1 block text-xs font-black uppercase"
+            >Correo Electrónico</label
+          >
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="usuario@iotus.com"
+            class="w-full border-4 border-black bg-slate-100 p-3 text-sm font-bold placeholder-slate-400 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] focus:bg-white focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label for="password" class="mb-1 block text-xs font-black uppercase"
+            >Contraseña</label
+          >
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            placeholder="••••••••"
+            class="w-full border-4 border-black bg-slate-100 p-3 text-sm font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] focus:bg-white focus:outline-none"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="mt-4 w-full border-4 border-black bg-yellow-300 py-3 text-sm font-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-pink-400 active:translate-x-1 active:translate-y-1 active:shadow-none"
+        >
+          ENTRAR ➔
+        </button>
+      </form>
+    </div>
+  </div>
+</Layout>

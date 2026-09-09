@@ -1,0 +1,34 @@
+---
+interface Props {
+  user: {
+    email?: string
+    user_metadata?: {
+      avatar_url?: string
+    }
+  }
+}
+
+const { user } = Astro.props
+const avatarUrl = user.user_metadata?.avatar_url
+const initial = user.email ? user.email : 'U'
+---
+
+<a
+  href="/perfil"
+  class="flex items-center gap-2 border-2 border-black bg-yellow-300 p-1 font-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+  title={user.email}
+>
+  {
+    avatarUrl ? (
+      <img
+        src={avatarUrl}
+        alt="Perfil"
+        class="h-8 w-8 border border-black object-cover"
+      />
+    ) : (
+      <div class="flex h-8 w-full overflow-x-clip px-2 items-center justify-center border border-black bg-pink-400 text-sm text-black">
+        {initial}
+      </div>
+    )
+  }
+</a>
