@@ -25,7 +25,11 @@ export function createSupabaseServerClient(context: {
         },
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value, options }) => {
-            context.cookies.set(name, value, options as AstroCookieSetOptions)
+            try {
+              context.cookies.set(name, value, options as AstroCookieSetOptions)
+            } catch {
+              
+            }
           })
         },
       },

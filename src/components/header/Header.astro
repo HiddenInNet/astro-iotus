@@ -2,26 +2,24 @@
 import IotusSVG from '@/assets/svg/iotus.svg'
 import StatusIndicator from '@/components/header/status/StatusIndicator.astro'
 import StatusSkeleton from '@/components/header/status/StatusSkeleton.astro'
-import ProfileButton from '@/components/header/profile/ProfileButton.astro'
-import JoinButton from '@/components/header/profile/JoinButton.astro'
+import ProfileButton from "@/components/header/profile/ProfileButton.astro"
+import JoinButton from "@/components/header/profile/JoinButton.astro"
 import { createSupabaseServerClient } from '@/lib/supabase'
 
-const supabase = createSupabaseServerClient(Astro)
-const {
-  data: { user },
-} = await supabase.auth.getUser()
+const user = Astro.locals.user
 
 let inventoryVisible = false
 
 if (user) {
+  const supabase = createSupabaseServerClient(Astro)
   const { data: userRoles } = await supabase
     .from('user_roles')
     .select('role_id')
     .eq('user_id', user.id)
 
   if (userRoles && userRoles.length > 0) {
-    const allowedRoles = ['ADMIN', 'MEMBER']
-    inventoryVisible = userRoles.some((r) => allowedRoles.includes(r.role_id))
+    const rolesList = userRoles.map((r) => r.role_id)
+    inventoryVisible = rolesList.includes('ADMIN') || rolesList.includes('MEMBER')
   }
 }
 
@@ -32,10 +30,9 @@ const baseNavItems = [
   { name: 'Sobre Nosotros', href: '/sobre-nosotros' },
 ]
 
-const navItems =
-  user && inventoryVisible
-    ? [...baseNavItems, { name: 'Inventario', href: '/inventario' }]
-    : baseNavItems
+const navItems = (user && inventoryVisible)
+  ? [...baseNavItems, { name: 'Inventario', href: '/inventario' }]
+  : baseNavItems
 ---
 
 <header
