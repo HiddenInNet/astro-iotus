@@ -3,13 +3,13 @@ import { createSupabaseServerClient } from '@/lib/supabase'
 
 export const POST: APIRoute = async (context) => {
   const formData = await context.request.formData()
-  const email = formData.get('email')?.toString()
+  const email = formData.get('email')?.toString().trim()
   const password = formData.get('password')?.toString()
 
   if (!email || !password) {
     return new Response(
-      JSON.stringify({ error: 'Email y contraseña requeridos' }),
-      { status: 400 }
+      JSON.stringify({ message: 'Todos los campos son obligatorios.' }),
+      { status: 400, headers: { 'Content-Type': 'application/json' } }
     )
   }
 
@@ -20,10 +20,14 @@ export const POST: APIRoute = async (context) => {
   })
 
   if (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 400,
-    })
+    return new Response(
+      JSON.stringify({ message: error.message }),
+      { status: 400, headers: { 'Content-Type': 'application/json' } }
+    )
   }
 
-  return context.redirect('/login?registered=true')
+  return new Response(
+    JSON.stringify({ message: 'Registro exitoso.' }),
+    { status: 200, headers: { 'Content-Type': 'application/json' } }
+  )
 }

@@ -2,13 +2,14 @@
 import IotusSVG from '@/assets/svg/iotus.svg'
 import StatusIndicator from '@/components/header/status/StatusIndicator.astro'
 import StatusSkeleton from '@/components/header/status/StatusSkeleton.astro'
-import ProfileButton from "@/components/header/profile/ProfileButton.astro"
-import JoinButton from "@/components/header/profile/JoinButton.astro"
+import ProfileButton from '@/components/header/profile/ProfileButton.astro'
+import JoinButton from '@/components/header/profile/JoinButton.astro'
 import { createSupabaseServerClient } from '@/lib/supabase'
 
 const user = Astro.locals.user
 
 let inventoryVisible = false
+let isAdmin = false
 
 if (user) {
   const supabase = createSupabaseServerClient(Astro)
@@ -19,7 +20,8 @@ if (user) {
 
   if (userRoles && userRoles.length > 0) {
     const rolesList = userRoles.map((r) => r.role_id)
-    inventoryVisible = rolesList.includes('ADMIN') || rolesList.includes('MEMBER')
+    isAdmin = rolesList.includes('ADMIN')
+    inventoryVisible = isAdmin || rolesList.includes('MEMBER')
   }
 }
 
@@ -30,9 +32,10 @@ const baseNavItems = [
   { name: 'Sobre Nosotros', href: '/sobre-nosotros' },
 ]
 
-const navItems = (user && inventoryVisible)
-  ? [...baseNavItems, { name: 'Inventario', href: '/inventario' }]
-  : baseNavItems
+const navItems =
+  user && inventoryVisible
+    ? [...baseNavItems, { name: 'Inventario', href: '/inventario' }]
+    : baseNavItems
 ---
 
 <header
@@ -53,7 +56,7 @@ const navItems = (user && inventoryVisible)
         </div>
       </a>
 
-      <StatusIndicator server:defer>
+      <StatusIndicator isAdmin={isAdmin} server:defer>
         <StatusSkeleton slot="fallback" />
       </StatusIndicator>
     </div>
@@ -133,7 +136,6 @@ const navItems = (user && inventoryVisible)
         ))
       }
 
-      <!-- Estado de Usuario Móvil -->
       {
         user ? (
           <div class="mt-4 border-t-2 border-black pt-4">

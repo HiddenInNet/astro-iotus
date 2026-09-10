@@ -1,103 +1,16 @@
 ---
+import SignUpForm from '@/components/auth/signUpForm'
 import Layout from '@/layouts/Layout.astro'
+import { name } from '@/data/info.json'
+
+const title: string = `Registro - ${name}`
 ---
 
-<Layout title="Registro - IOTUS">
+<Layout title={title}>
   <div
-    class="flex w-full min-h-screen items-center justify-center bg-cyan-400 px-4 font-mono text-black py-12"
+    id="register-main-container"
+    class="flex w-full flex-1 items-center justify-center bg-cyan-400 px-4 py-12 font-mono text-black"
   >
-    <div
-      class="w-full max-w-md border-4 border-black bg-white p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
-    >
-      <div class="mb-6 border-b-4 border-black pb-4 text-center">
-        <span
-          class="inline-block border-2 border-black bg-yellow-300 px-3 py-1 text-xs font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-        >
-          NUEVA CUENTA
-        </span>
-        <h1 class="mt-2 text-3xl font-black uppercase">REGISTRARSE</h1>
-      </div>
-
-      <form id="signup-form" action="/api/auth/signup" method="POST" class="space-y-4">
-        <div>
-          <label for="email" class="mb-1 block text-xs font-black uppercase"
-            >Correo Electrónico</label
-          >
-          <input
-            type="email"
-            id="email"
-            name="email"
-            required
-            placeholder="usuario@iotus.com"
-            class="w-full border-4 border-black bg-slate-100 p-3 text-sm font-bold placeholder-slate-400 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] focus:bg-white focus:outline-none"
-          />
-        </div>
-
-        <div>
-          <label for="password" class="mb-1 block text-xs font-black uppercase"
-            >Contraseña</label
-          >
-          <input
-            type="password"
-            id="password"
-            name="password"
-            required
-            placeholder="••••••••"
-            class="w-full border-4 border-black bg-slate-100 p-3 text-sm font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] focus:bg-white focus:outline-none"
-          />
-        </div>
-
-        <div>
-          <label for="confirmPassword" class="mb-1 block text-xs font-black uppercase"
-            >Confirmar Contraseña</label
-          >
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            required
-            placeholder="••••••••"
-            class="w-full border-4 border-black bg-slate-100 p-3 text-sm font-bold shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] focus:bg-white focus:outline-none"
-          />
-        </div>
-
-        <p id="error-message" class="hidden text-xs font-black text-red-600 uppercase border-2 border-black bg-red-100 p-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-          ⚠️ Las contraseñas no coinciden.
-        </p>
-
-        <button
-          type="submit"
-          class="mt-4 w-full border-4 border-black bg-lime-300 py-3 text-sm font-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-yellow-300 active:translate-x-1 active:translate-y-1 active:shadow-none cursor-pointer"
-        >
-          CREAR CUENTA ➔
-        </button>
-      </form>
-
-      <div class="mt-6 border-t-4 border-black pt-6 text-center">
-        <p class="mb-3 text-xs font-bold uppercase">¿Ya tienes una cuenta?</p>
-        <a
-          href="/login"
-          class="inline-block w-full border-4 border-black bg-yellow-300 py-2.5 text-center text-xs font-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-pink-400 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
-        >
-          INICIAR SESIÓN ➔
-        </a>
-      </div>
-    </div>
+    <SignUpForm client:only="react" />
   </div>
 </Layout>
-
-<script>
-  const form = document.getElementById('signup-form') as HTMLFormElement | null
-  const passwordInput = document.getElementById('password') as HTMLInputElement | null
-  const confirmInput = document.getElementById('confirmPassword') as HTMLInputElement | null
-  const errorMessage = document.getElementById('error-message')
-
-  form?.addEventListener('submit', (e) => {
-    if (passwordInput?.value !== confirmInput?.value) {
-      e.preventDefault()
-      errorMessage?.classList.remove('hidden')
-    } else {
-      errorMessage?.classList.add('hidden')
-    }
-  })
-</script>

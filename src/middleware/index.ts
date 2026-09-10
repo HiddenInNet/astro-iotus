@@ -31,9 +31,31 @@ export const onRequest = defineMiddleware(async (context, next) => {
       .eq('user_id', user.id)
 
     const allowedRoles = ['ADMIN', 'MEMBER']
-    const hasPermission = userRoles?.some((r) => allowedRoles.includes(r.role_id))
+    const hasPermission = userRoles?.some((r) =>
+      allowedRoles.includes(r.role_id)
+    )
 
-    // Si no posee el rol autorizado, se redirige (puedes mandarlo al inicio o a login)
+    if (!hasPermission) {
+      return redirect('/?error=unauthorized')
+    }
+  }
+
+  if (url.pathname.startsWith('/admin')) {
+    if (!user) {
+      return redirect(`/login?redirectTo=${encodeURIComponent(url.pathname)}`)
+    }
+
+    // Consultar roles en Supabase
+    const { data: userRoles } = await supabase
+      .from('user_roles')
+      .select('role_id')
+      .eq('user_id', user.id)
+
+    const allowedRoles = ['ADMIN']
+    const hasPermission = userRoles?.some((r) =>
+      allowedRoles.includes(r.role_id)
+    )
+
     if (!hasPermission) {
       return redirect('/?error=unauthorized')
     }

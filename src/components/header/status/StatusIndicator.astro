@@ -2,6 +2,11 @@
 import { getIsOpen } from '@/lib/services/settings'
 import PopUp from '@/components/utils/PopUp.astro'
 
+interface Props {
+  isAdmin?: boolean
+}
+
+const { isAdmin = false } = Astro.props
 const isOpen = await getIsOpen()
 ---
 
@@ -9,7 +14,7 @@ const isOpen = await getIsOpen()
   id="status-indicator"
   data-popup-trigger
   onclick="window.showNeobrutalPopUp(event, 'department-state-popup')"
-  class={`flex items-center justify-center gap-2 border-2 border-black px-2.5 py-1 text-xs font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] md:min-w-30 ${
+  class={`flex cursor-pointer items-center justify-center gap-2 border-2 border-black px-2.5 py-1 text-xs font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none md:min-w-30 ${
     isOpen ? 'bg-emerald-400 text-black' : 'bg-red-500 text-white'
   }`}
   title={isOpen ? 'Departamento Abierto' : 'Departamento Cerrado'}
@@ -30,5 +35,54 @@ const isOpen = await getIsOpen()
 </div>
 
 <PopUp id="department-state-popup" title="ESTADO IOTUS">
-  <p>El departamento está {isOpen ? 'abierto' : 'cerrado'}</p>
+  <div class="space-y-4 font-mono text-black">
+    <p class="text-xs font-bold uppercase">
+      El departamento está actualmente:
+      <span
+        class={isOpen
+          ? 'text-emerald-600 font-black'
+          : 'text-red-600 font-black'}
+      >
+        {isOpen ? 'ABIERTO' : 'CERRADO'}
+      </span>
+    </p>
+
+    {
+      isAdmin && (
+        <div class="border-t-2 border-black pt-4">
+          <button
+            id="toggle-dept-btn"
+            type="button"
+            class={`w-full cursor-pointer border-3 border-black py-2 text-xs font-black uppercase shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all active:translate-x-0.5 active:translate-y-0.5 active:shadow-none ${
+              isOpen
+                ? 'bg-red-400 text-black hover:bg-red-500'
+                : 'bg-lime-300 text-black hover:bg-lime-400'
+            }`}
+          >
+            {isOpen ? 'CERRAR DEPARTAMENTO ➔' : 'ABRIR DEPARTAMENTO ➔'}
+          </button>
+        </div>
+      )
+    }
+  </div>
 </PopUp>
+
+<script>
+  const toggleBtn = document.getElementById('toggle-dept-btn')
+
+  toggleBtn?.addEventListener('click', async () => {
+    try {
+      const res = await fetch('/api/settings/toggle-department', {
+        method: 'POST',
+      })
+
+      if (res.ok) {
+        window.location.reload()
+      } else {
+        alert('Error al cambiar el estado del departamento.')
+      }
+    } catch {
+      alert('Error de conexión con el servidor.')
+    }
+  })
+</script>

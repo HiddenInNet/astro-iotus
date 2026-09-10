@@ -1,0 +1,42 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import UserMonitor from '@/components/admin/UserMonitor'
+import { createSupabaseServerClient } from '@/lib/supabase'
+
+const supabase = createSupabaseServerClient(Astro)
+const {
+  data: { user },
+} = await supabase.auth.getUser()
+
+// Protección de Ruta: Redirigir si no hay sesión
+if (!user) {
+  return Astro.redirect('/signin')
+}
+---
+
+<Layout title="Monitor de Usuarios - IOTUS">
+  <div
+    class="flex min-h-full w-full flex-1 flex-col bg-cyan-400 px-4 py-8 font-mono text-black sm:px-8"
+  >
+    <div class="mx-auto w-full max-w-7xl space-y-6">
+      <!-- Cabecera de Sección -->
+      <div
+        class="flex flex-col gap-4 border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] sm:flex-row sm:items-center sm:justify-between"
+      >
+        <div>
+          <span
+            class="inline-block border-2 border-black bg-yellow-300 px-3 py-1 text-xs font-black uppercase shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          >
+            PANEL DE CONTROL
+          </span>
+          <h1 class="mt-2 text-2xl font-black uppercase sm:text-3xl">
+            MONITOR DE USUARIOS
+          </h1>
+        </div>
+      </div>
+
+      <!-- Componente React Interactivo -->
+      <UserMonitor client:only="react" />
+    </div>
+  </div>
+</Layout>

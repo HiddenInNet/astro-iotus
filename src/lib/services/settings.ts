@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase'
+import { createClient } from '@supabase/supabase-js'
 
 export async function getIsOpen(): Promise<boolean> {
   try {
@@ -13,4 +14,23 @@ export async function getIsOpen(): Promise<boolean> {
     console.error('Error al obtener isOpen: ', error)
     return false
   }
+}
+
+const supabaseAdmin = createClient(
+  import.meta.env.SUPABASE_URL,
+  import.meta.env.SUPABASE_SERVICE_ROLE_KEY
+)
+
+export async function setIsOpen(isOpen: boolean): Promise<boolean> {
+  const { error } = await supabaseAdmin
+    .from('settings')
+    .update({ value: isOpen })
+    .eq('name', 'isOpen')
+
+  if (error) {
+    console.error('Error al actualizar el estado del departamento:', error)
+    throw new Error(`No se pudo actualizar el estado: ${error.message}`)
+  }
+
+  return isOpen
 }

@@ -17,7 +17,7 @@ if (user) {
 
 <Layout title={title}>
   <div
-    class="flex w-full items-center justify-center bg-cyan-400 px-4 font-mono text-black"
+    class="flex w-full flex-1 items-center justify-center bg-cyan-400 px-4 py-12 font-mono text-black"
   >
     <div
       class="w-full max-w-md border-4 border-black bg-white p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
@@ -64,11 +64,24 @@ if (user) {
 
         <button
           type="submit"
-          class="mt-4 w-full border-4 border-black bg-yellow-300 py-3 text-sm font-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-pink-400 active:translate-x-1 active:translate-y-1 active:shadow-none"
+          class="mt-4 w-full cursor-pointer border-4 border-black bg-yellow-300 py-3 text-sm font-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-pink-400 active:translate-x-1 active:translate-y-1 active:shadow-none"
         >
           ENTRAR ➔
         </button>
       </form>
+
+      <!-- Redirección a Registro -->
+      <div class="mt-6 border-t-4 border-black pt-6 text-center">
+        <p class="mb-3 text-xs font-bold uppercase">
+          ¿Aún no tienes una cuenta?
+        </p>
+        <a
+          href="/register"
+          class="inline-block w-full border-4 border-black bg-lime-300 py-2.5 text-center text-xs font-black uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-yellow-300 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+        >
+          REGISTRARSE AQUÍ ➔
+        </a>
+      </div>
     </div>
   </div>
 </Layout>
